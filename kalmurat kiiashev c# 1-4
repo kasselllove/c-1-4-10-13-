@@ -1,0 +1,228 @@
+using System;
+using System.Collections.Generic;
+
+// ---- 1 ---- //
+
+class BudgetPlanner
+{
+    static void Main()
+    {
+        Console.Write("Введите расходы на аренду: ");
+        double rent = Convert.ToDouble(Console.ReadLine());
+
+        Console.Write("Введите расходы на еду: ");
+        double food = Convert.ToDouble(Console.ReadLine());
+
+        Console.Write("Введите расходы на транспорт: ");
+        double transport = Convert.ToDouble(Console.ReadLine());
+        double totalExpenses = rent + food + transport;
+
+        Console.Write("Введите доход: ");
+        double income = Convert.ToDouble(Console.ReadLine());
+        double remainingFunds = income - totalExpenses;
+
+        Console.WriteLine($"\nРасходы: {totalExpenses}");
+        Console.WriteLine($"Остаток: {remainingFunds}");
+    }
+}
+
+// ---- 2 ---- //
+
+class HealthIndicator
+{
+    static void Main()
+    {
+        Console.Write("Введите вес: ");
+        double weight = Convert.ToDouble(Console.ReadLine());
+
+        Console.Write("Введите рост: ");
+        double height = Convert.ToDouble(Console.ReadLine());
+
+        int age = Convert.ToInt32(Console.ReadLine());
+        double bmi = weight / (height * height);
+
+        Console.WriteLine($"\nВаш ИМТ: {bmi:F2}");
+
+        if (bmi < 18.5)
+            Console.WriteLine("Недостаточный вес");
+        else if (bmi >= 18.5 && bmi < 24.9)
+            Console.WriteLine("Нормальный вес");
+        else if (bmi >= 25 && bmi < 29.9)
+            Console.WriteLine("Избыточный вес");
+        else
+            Console.WriteLine("Ожирение");
+    }
+}
+
+// ---- 3 ---- //
+
+class TaskManager
+{
+    static List<string> tasks = new List<string>();
+    static List<bool> taskStatus = new List<bool>();
+
+    static void Main()
+    {
+        while (true)
+        {
+            Console.WriteLine("\nУправление задачами:");
+            Console.WriteLine("1. Добавить задачу");
+            Console.WriteLine("2. Удалить задачу");
+            Console.WriteLine("3. Изменить статус задачи");
+            Console.WriteLine("4. Показать список задач");
+            Console.WriteLine("5. Выйти");
+            Console.Write("Выберите действие: ");
+            string choice = Console.ReadLine();
+
+            switch (choice)
+            {
+                case "1":
+                    AddTask();
+                    break;
+                case "2":
+                    RemoveTask();
+                    break;
+                case "3":
+                    ChangeTaskStatus();
+                    break;
+                case "4":
+                    ShowTasks();
+                    break;
+                case "5":
+                    return;
+                default:
+                    Console.WriteLine("Неверный ввод.");
+                    break;
+            }
+        }
+    }
+
+    static void AddTask()
+    {
+        Console.Write("Введите описание задачи: ");
+        string task = Console.ReadLine();
+        tasks.Add(task);
+        taskStatus.Add(false);
+        Console.WriteLine("Задача добавлена");
+    }
+
+    static void RemoveTask()
+    {
+        ShowTasks();
+        Console.Write("Введите индекс задачи для удаления: ");
+        int index = Convert.ToInt32(Console.ReadLine()) - 1;
+
+        if (index >= 0 && index < tasks.Count)
+        {
+            tasks.RemoveAt(index);
+            taskStatus.RemoveAt(index);
+            Console.WriteLine("Задача удалена");
+        }
+        else
+        {
+            Console.WriteLine("Неверный номер задачи");
+        }
+    }
+
+    static void ChangeTaskStatus()
+    {
+        ShowTasks();
+        Console.Write("Введите номер задачи для изменения статуса: ");
+        int index = Convert.ToInt32(Console.ReadLine()) - 1;
+
+        if (index >= 0 && index < tasks.Count)
+        {
+            taskStatus[index] = !taskStatus[index];
+            Console.WriteLine("Статус задачи изменен.");
+        }
+        else
+        {
+            Console.WriteLine("Неверный номер задачи.");
+        }
+    }
+
+    static void ShowTasks()
+    {
+        if (tasks.Count == 0)
+        {
+            Console.WriteLine("Список задач пуст.");
+            return;
+        }
+
+        Console.WriteLine("\nСписок задач:");
+        for (int i = 0; i < tasks.Count; i++)
+        {
+            string status = taskStatus[i] ? "[Выполнена]" : "[Не выполнена]";
+            Console.WriteLine($"{i + 1}. {tasks[i]} {status}");
+        }
+    }
+}
+
+// ---- 4 ---- //
+
+class EventCalendar
+{
+    static List<DateTime> eventDates = new List<DateTime>();
+    static List<string> eventDescriptions = new List<string>();
+
+    static void Main()
+    {
+        while (true)
+        {
+            Console.WriteLine("\nКалендарь событий:");
+            Console.WriteLine("1. Добавить событие");
+            Console.WriteLine("2. Показать события");
+            Console.WriteLine("3. Выйти");
+            Console.Write("Выберите действие: ");
+            string choice = Console.ReadLine();
+
+            switch (choice)
+            {
+                case "1":
+                    AddEvent();
+                    break;
+                case "2":
+                    ShowEvents();
+                    break;
+                case "3":
+                    return;
+                default:
+                    Console.WriteLine("Неверный ввод.");
+                    break;
+            }
+        }
+    }
+
+    static void AddEvent()
+    {
+        Console.Write("Введите дату события: ");
+        DateTime date = DateTime.Parse(Console.ReadLine());
+
+        Console.Write("Введите описание события: ");
+        string description = Console.ReadLine();
+
+        eventDates.Add(date);
+        eventDescriptions.Add(description);
+        Console.WriteLine("Событие добавлено");
+    }
+
+    static void ShowEvents()
+    {
+        if (eventDates.Count == 0)
+        {
+            Console.WriteLine("Нет событий");
+            return;
+        }
+
+        List<int> indices = new List<int>();
+        for (int i = 0; i < eventDates.Count; i++) indices.Add(i);
+
+        indices.Sort((i, j) => eventDates[i].CompareTo(eventDates[j]));
+
+        Console.WriteLine("\nСписок событий");
+        foreach (int i in indices)
+        {
+            Console.WriteLine($"{eventDates[i]:yyyy-MM-dd}: {eventDescriptions[i]}");
+        }
+    }
+}
